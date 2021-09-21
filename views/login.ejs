@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+<%- include('./partials/head') %>
+
+    <body class="login">
+        <%- include('./partials/header') %>
+            <main>
+                <h1>BIENVENIDO</h1>
+                <form action="" method="POST">
+                    <div class="box-form">
+                        <label for="email">Email</label>
+                        <input type="email" name="email" id="email" placeholder="Ingresá tu email">
+                    </div>
+                    <div class="box-form">
+                        <label for="password">Contraseña</label>
+                        <input type="password" name="password" id="password" placeholder="contraseña">
+                    </div>
+                    <div class="box-remember">
+                        <input type="checkbox" name="recordar" id="recordar">
+                        <label for="recordar">Recordarme</label>
+                    </div>
+                    <small class="text-danger small"><%= locals.errores && errores.email ? errores.email.msg : null %> </small>
+                    <div class="box-button">
+                        <button type="submit">Ingresar</button>
+                    </div>
+                </form>
+            </main>
+            <%- include('./partials/footer') %> 
+            <%- include('./partials/scripts') %>
+
+    </body>
+
+</html>

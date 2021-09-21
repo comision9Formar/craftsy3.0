@@ -1,0 +1,130 @@
+.home main{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+/* banner */
+
+.home .carousel-item {
+    height: 355px;
+    width: 100%;
+    background-size: 100%;
+    background-repeat: no-repeat;
+}
+
+/* productos */
+
+.home .productos{
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start;
+    margin-bottom: 20px;
+}
+.home .productos article{
+    width: 90%;
+    margin: 20px 0;
+    background-color: #fff;
+    padding: 10px;
+    position: relative;
+}
+.home .productos article img.photo{
+    width: 100%;
+}
+.home .productos article img.img-discount{
+    position: absolute;
+    top: 0;
+    left: 10px;
+}
+
+.home .productos article h4{
+    margin: 10px 0;
+}
+.home .productos article a{
+    text-transform: uppercase;
+}
+
+/* aside - generales */
+
+.home aside{
+    width: 100%;
+}
+
+.home aside h3, .home aside .ads{
+    background-color: #fff;
+    border: 1px solid #bcf1f9;
+    padding: 10px 5%;
+    border: 1px solid #a6a6a6;
+
+}
+
+.home aside h3{
+    margin-bottom: 20px;
+}
+
+.home aside h3.title-ads{
+    margin-top: 30px;
+}
+
+/* aside - tutoriales */
+
+.home aside .tuto article{
+    background-color: #fff;
+    padding: 10px 5%;
+    display: flex;
+    align-items: center;
+    border: 1px solid #a6a6a6;
+    border-bottom: none;
+}
+
+.home aside .tuto article:last-child{
+    border-bottom: 1px solid #a6a6a6;
+
+}
+
+.home aside .tuto article p{
+    margin-left: 10px;
+}
+
+/* aside - publicidad */
+
+.home aside .ads img{
+    width: 100%;
+}
+
+.glider{
+    overflow: hidden;
+}
+
+
+@media (min-width:768px) {
+    .home .productos{
+        width: 65%;
+    }
+
+    .home aside{
+        width: 30%;
+    }
+}
+
+@media (min-width:1140px ) {
+
+    .home main{
+        justify-content: space-between;
+    }
+
+    .home .productos{
+        width: 800px;
+        justify-content: space-around;
+    }
+
+    .home .productos article{
+        width: 370px;
+    }
+
+    .home aside{
+        width: 320px;
+    }
+}

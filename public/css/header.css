@@ -1,0 +1,42 @@
+header{
+    background-color: var(--color-rojo);
+    padding: 20px 10px;
+    width: 100%;
+}
+
+header a{
+    text-transform: uppercase;
+    color: #fff;
+    line-height: 20px;
+    text-decoration: none;
+    transition-property: all;
+    transition-duration: 5s;
+}
+
+header a:hover{
+    background-color: tomato;
+}
+
+@media (min-width:768px) {
+
+    header .logo{
+        width: 20%;
+    }
+    header ul{
+        display: flex;
+    }
+
+    header ul li{
+        margin-left: 8px;
+    }
+}
+
+@media (min-width:1024px) {
+    header .logo{
+        width: 10%;
+    }
+
+    header .logo img{
+        text-align: center;
+    }
+}

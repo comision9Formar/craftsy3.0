@@ -1,0 +1,82 @@
+[
+  {
+    "id": 4,
+    "nombre": "LG K9",
+    "precio": 27000,
+    "descripcion": "lorem ipsum dolor amet sit.",
+    "imagen": "img-phone-01.jpg",
+    "categoria": "reciclados"
+  },
+  {
+    "id": 5,
+    "nombre": "Samsung Pocket",
+    "precio": 25000,
+    "descripcion": "lorem ipsum dolor amet sit.",
+    "imagen": "img-phone-02.png",
+    "categoria": "nuevos"
+  },
+  {
+    "id": 6,
+    "nombre": "Xiomi Redmi Note 8",
+    "precio": 28000,
+    "descripcion": "lorem ipsum dolor amet sit.",
+    "imagen": "img-phone-03.webp",
+    "categoria": "reciclados"
+  },
+  {
+    "id": 10,
+    "nombre": "Samsung A12",
+    "precio": 44999,
+    "descripcion": "Lorem ipsum dolor amet sit.",
+    "categoria": "usados",
+    "imagen": "img-phone-1628544532732.png"
+  },
+  {
+    "id": 11,
+    "nombre": "Samsung A71",
+    "precio": 60000,
+    "descripcion": "Lorem ipsum dolor amet sit.",
+    "categoria": "reciclados",
+    "imagen": "img-phone-1628626270966.png"
+  },
+  {
+    "id": 12,
+    "nombre": "Xiomi Redmi Note 8",
+    "precio": 28000,
+    "descripcion": "lorem ipsum dolor amet sit.",
+    "imagen": "img-phone-03.webp",
+    "categoria": "reciclados"
+  },
+  {
+    "id": 14,
+    "nombre": "Motorola X-Play",
+    "precio": 50000,
+    "descripcion": "Este sí es el mejor celular",
+    "categoria": "reciclados",
+    "imagen": "img-phone-03.webp"
+  },
+  {
+    "id": 15,
+    "nombre": "Samsung A12",
+    "precio": 44999,
+    "descripcion": "Lorem ipsum dolor amet sit.",
+    "categoria": "reciclados",
+    "imagen": "img-phone-1628544532732.png"
+  },
+  {
+    "id": 16,
+    "nombre": "Samsung A71",
+    "precio": 60000,
+    "descripcion": "Lorem ipsum dolor amet sit.",
+    "categoria": "reciclados",
+    "imagen": "img-phone-1628626270966.png"
+  },
+  {
+    "id": 17,
+    "nombre": "Nokia 1100",
+    "precio": 90000,
+    "descripcion": "El mejor de todos",
+    "categoria": "nuevos",
+    "imagen": "img-phone-1629835173675.png"
+  }
+]

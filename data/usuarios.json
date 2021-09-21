@@ -1,0 +1,29 @@
+[
+  {
+    "id": 1,
+    "nombre": "Eric",
+    "email": "menaericdaniel@gmail.com",
+    "password": "$2a$10$.HdNoojy7hI2SOdcRjo1qOUXMrk4.GzH6Ct1lDJjcLCGX3Hzt2Jdq",
+    "pais": "ar",
+    "genero": "m",
+    "rol": "admin"
+  },
+  {
+    "id": 2,
+    "nombre": "Gabriel",
+    "email": "gabriel@gmail.com",
+    "password": "$2a$10$xKoOIzhVgRgweg6SM/ZWWetfkVMHcxvhbE08AOrHNguc9udk74r5i",
+    "pais": "br",
+    "genero": "m",
+    "rol": "user"
+  },
+  {
+    "id": 3,
+    "nombre": "Melisa",
+    "email": "melisa@gmail.com",
+    "password": "$2a$10$UxgwgfmvnzYWjQxejzaTG.fAR.jOFupLyRMIJFBtMgwmekbeUpaUO",
+    "pais": "uy",
+    "genero": "f",
+    "rol": "user"
+  }
+]
