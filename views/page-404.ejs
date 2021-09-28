@@ -3,10 +3,14 @@
 <%- include('./partials/head') %>
 
     <body class="404">
-
-        <h1>Pagina no encontrada... sorry</h1>
-        <a href="/">Volver al home</a>
-
+        <div class="container mt-5">
+            <a href="/">Volver al home</a>
+            <h1><%= message %></h1>
+            <h2><%= error.status %></h2>
+            <pre><%= error.stack %></pre>
+        </div>
+       
+        
     </body>
 
 </html>

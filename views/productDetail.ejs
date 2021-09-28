@@ -1,22 +1,35 @@
 <!DOCTYPE html>
 <html lang="es">
-<%- include('./partials/head',{title : producto.nombre}) %>
+<%- include('./partials/head',{title : product.name}) %>
 
     <body class="login">
         <%- include('./partials/header') %>
             <main>
-                <div class="card mb-3" style="max-width: 320px;">
+                <div class="card my-3 p-2 " style="width:600px">
+                  <div class="row">
+                    <div class="col-4">
+                      <div class="d-flex flex-column">
+                        <% product.images.forEach(image => { %>
+                          <img width="150" class="my-2" src="/images/<%= image.file %>" alt="" onclick="document.getElementById('masterImg').setAttribute('src','/images/<%=image.file%>')">
+                    <% }) %>
+                      </div>
+                     
+                    </div>
+                    <div class="col-8">
                       <div class="">
-                        <img src="/images/<%= producto.imagen %>" class="card-img-top" alt="...">
+                        <img id="masterImg" src="/images/<%= product.images[0].file %>" class="card-img-top" alt="...">
                       </div>
                       <div class="col-md-8">
                         <div class="card-body">
-                          <h5 class="card-title"><%= producto.nombre %> </h5>
-                          <h6 class="card-title">$<%= producto.precio %> </h6>
-                          <p class="card-text"><%= producto.descripcion %> </p>
-                          <p class="card-text"><small class="text-muted"><%= capitalizeOneLetter(producto.categoria) %></small></p>
+                          <h5 class="card-title"><%= product.name %> </h5>
+                          <h6 class="card-title">$<%= product.price %> </h6>
+                          <p class="card-text"><%= product.description %> </p>
+                          <p class="card-text"><small class="text-muted"><%= capitalizeOneLetter(product.category.name) %></small></p>
                         </div>
                       </div>
+                    </div>
+                  </div>
+                     
                   </div>
                
             </main>

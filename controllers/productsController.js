@@ -1,18 +1,20 @@
+const {validationResult} = require('express-validator');
+const capitalizeOneLetter = require('../utils/capitalizeOneLetter');
 const fs = require('fs');
 const path = require('path');
-const productos = JSON.parse(fs.readFileSync(path.join(__dirname,'..','data','productos.json'),'utf-8'));
-const categorias = JSON.parse(fs.readFileSync(path.join(__dirname,'..','data','categorias.json'),'utf-8'));
-
-const {validationResult} = require('express-validator');
-
-const capitalizeOneLetter = require('../utils/capitalizeOneLetter');
+const db = require('../database/models')
 
 module.exports = {
     add : (req,res) => {
-        return res.render('productAdd',{
-            categorias,
-            productos,
+        db.Category.findAll({
+            order : [
+                ['name','ASC']
+            ]
         })
+            .then(categorias => res.render('productAdd',{
+                categorias,
+            }))
+            .catch(error => console.log(error))
     },
     store : (req,res) => {
 
@@ -21,80 +23,148 @@ module.exports = {
         if(errors.isEmpty()){
             const {nombre,precio,descripcion,categoria} = req.body;
        
-            let producto = {
-                id: productos[productos.length - 1].id + 1,
-                nombre,
-                precio : +precio,
-                descripcion,
-                categoria,
-                imagen : req.file ? req.file.filename : 'default-image.png'
-            }
-     
-            productos.push(producto)
-            fs.writeFileSync(path.join(__dirname,'..','data','productos.json'),JSON.stringify(productos,null,2),'utf-8');
-            return res.redirect('/admin')
-        }else{
-            return res.render('productAdd',{
-                categorias,
-                productos,
-                errores : errors.mapped(),
-                old : req.body
-            })
-        }
+            db.Product.create(
+                {
+                    name : nombre.trim(),
+                    description : descripcion.trim(),
+                    price : precio,
+                    categoryId : categoria
+                }
+            )
+                .then(product => {
+                    console.log(product);
+                    if(req.files.length != 0){
+                        let images = req.files.map(image => {
+                            let item = {
+                                file : image.filename,
+                                productId : product.id
+                            }
+                            return item
+                        }) 
 
-      
-    
+                        db.Image.bulkCreate(images,{validate : true})
+                            .then( () => console.log('imagenes guardadas satisfactoriamente'))
+                    }
+
+                    return res.redirect('/admin')
+                })
+                .catch(error => console.log(error))
+           
+            
+        }else{
+            db.Category.findAll({
+                order : [
+                    ['name','ASC']
+                ]
+            })
+                .then(categorias => res.render('productAdd',{
+                    categorias,
+                    errores : errors.mapped(),
+                    old : req.body
+                }))
+                .catch(error => console.log(error))
+          
+        }
     },
     detail : (req,res) => {
-        let producto = productos.find(producto => producto.id === +req.params.id)
-            return res.render('productDetail',{
-                producto,
-                capitalizeOneLetter
+        db.Product.findByPk(req.params.id, {
+            include : ['category','images']
+        })
+            .then(product => {
+                return res.render('productDetail',{
+                    product,
+                    capitalizeOneLetter
+                })
             })
-
+            .catch(error => console.log(error))
     },
     edit : (req,res) => {
-        let producto = productos.find(producto => producto.id === +req.params.id)
-        return res.render('productEdit',{
-            productos,
-            categorias,
-            producto,
+        let categories = db.Category.findAll({
+            order : [
+                ['name']
+            ]
         })
+        let product = db.Product.findByPk(req.params.id, {
+            include : ['category','images']
+        })
+        Promise.all(([categories, product]))
+            .then(([categories, product]) => {
+                return res.render('productEdit',{
+                    categories,
+                    product,
+                })
+            })
+            .catch(error => console.log(error))
+
+       
     },
     update : (req,res) => {
         let errors = validationResult(req);
-        let producto = productos.find(producto => producto.id === +req.params.id)
 
         if(errors.isEmpty()){
             
             const {nombre,precio,descripcion,categoria} = req.body;
-
-            productos.forEach(producto => {
-                if(producto.id === +req.params.id){
-                    producto.nombre = nombre;
-                    producto.descripcion = descripcion;
-                    producto.precio = +precio;
-                    producto.categoria = categoria
+            db.Product.update(
+                {
+                    name : nombre.trim(),
+                    description : descripcion.trim(),
+                    price : precio,
+                    categoryId : categoria
+                },
+                {
+                    where : {
+                        id : req.params.id
+                    }
                 }
-            });
-    
-            fs.writeFileSync(path.join(__dirname,'..','data','productos.json'),JSON.stringify(productos,null,2),'utf-8');
-            return res.redirect('/')
+            )
+                .then( response => {
+                    console.log(response)
+                    return res.redirect('/admin')
+                })
+                .catch(error => console.log(error))
+
+           
         }else{
-            return res.render('productEdit',{
-                productos,
-                categorias,
-                producto,
-                errores : errors.mapped(),
+            let categories = db.Category.findAll({
+                order : [
+                    ['name']
+                ]
             })
+            let product = db.Product.findByPk(req.params.id, {
+                include : ['category','images']
+            })
+            Promise.all(([categories, product]))
+                .then(([categories, product]) => {
+                    return res.render('productEdit',{
+                        categories,
+                        product,
+                        errores : errors.mapped()
+                    })
+                })
+                .catch(error => console.log(error))
         }
       
     },
     destroy : (req,res) => {
-        let productosModificados = productos.filter(producto => producto.id !== +req.params.id);
-
-        fs.writeFileSync(path.join(__dirname,'..','data','productos.json'),JSON.stringify(productosModificados,null,2),'utf-8');
-        return res.redirect('/admin')
+        db.Product.findByPk(req.params.id,{
+            include : ['images']
+        })
+            .then(products => {
+                products.images.forEach(image => {
+                    if(fs.existsSync(path.join(__dirname,'../public/images',image.file))){
+                        fs.unlinkSync(path.join(__dirname,'../public/images',image.file))
+                    }
+                });
+                db.Product.destroy({
+                    where : {
+                        id : req.params.id
+                    }
+                })
+                .then( () => {
+                    return res.redirect('/admin')
+                })
+            })
+            .catch(error => console.log(error))
 
     }
 }

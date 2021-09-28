@@ -7,7 +7,7 @@ const productValidator = require('../validations/productValidator');
 
 /* products */
 router.get('/add',add);
-router.post('/add', upload.single('imagen'), productValidator ,store);
+router.post('/add', upload.array('imagen'), productValidator ,store);
 
 router.get('/detail/:id',detail)
 

@@ -40,51 +40,47 @@
                 <section class="productos">
                     <h3 class="w-100">Celulares nuevos</h3>
 
-                    <% productos.forEach(producto=> { %>
-                        <% if (producto.categoria==="nuevos" ) { %>
+                    <% nuevos.forEach(producto=> { %>
+                        <article>
+                            <img class="photo" src="/images/<%=producto.images[0].file%>" alt="">
+                            <img class="img-discount" src="/images/img-descuento.png" alt="">
+                            <h4>
+                                <%= producto.name %>
+                            </h4>
+                            <p>
+                                <%= producto.description %>
+                            </p>
+                            <div class="d-flex justify-content-around flex-wrap">
+                                <a class="btn btn-sm btn-primary" href="/products/detail/<%= producto.id %>">ver
+                                    más</a>
+                                
+                            </div>
+
+                        </article>
+
+                        <% }) %>
+
+                    <h3 class="w-100">Celulares usados</h3>
+                        <% usados.forEach(producto=> { %>
                             <article>
-                                <img class="photo" src="/images/<%=producto.imagen%>" alt="">
-                                <img class="img-discount" src="/images/img-descuento.png" alt="">
+                                <img src="/images/<%=producto.images[0].file%>" alt="">
                                 <h4>
-                                    <%= producto.nombre %>
+                                    <%= producto.name %>
                                 </h4>
                                 <p>
-                                    <%= producto.descripcion %>
+                                    <%= producto.description %>
                                 </p>
                                 <div class="d-flex justify-content-around flex-wrap">
-                                    <a class="btn btn-sm btn-primary" href="/products/detail/<%= producto.id %>">ver
+                                    <a class="btn btn-sm btn-primary"
+                                        href="/products/detail/<%= producto.id %>">ver
                                         más</a>
-                                   
                                 </div>
 
                             </article>
-                            <% } %>
 
-                                <% }) %>
+                        <% }) %>
 
-                                    <h3 class="w-100">Celulares usados</h3>
-                                    <% productos.forEach(producto=> { %>
-                                        <% if (producto.categoria==="usados" ) { %>
-                                            <article>
-                                                <img src="/images/<%=producto.imagen%>" alt="">
-                                                <h4>
-                                                    <%= producto.nombre %>
-                                                </h4>
-                                                <p>
-                                                    <%= producto.descripcion %>
-                                                </p>
-                                                <div class="d-flex justify-content-around flex-wrap">
-                                                    <a class="btn btn-sm btn-primary"
-                                                        href="/products/detail/<%= producto.id %>">ver
-                                                        más</a>
-                                                </div>
-
-                                            </article>
-                                            <% } %>
-
-                                                <% }) %>
-
-                                                </section>
+                </section>
            
                 <aside>
                     <h3>Tutoriales</h3>
@@ -117,25 +113,25 @@
 
                     <div class="glider-contain">
                         <div class="glider">
-                            <% for( let index = 0; index < productos.length - 1; index++ ) { %>
-    
-                                <% if (productos[index].categoria==="reciclados" ) { %>
-                                        <article class="card mx-2 p-2">
-                                            <img src="/images/<%=productos[index].imagen%>" alt="">
-                                            <h4>
-                                                <%= productos[index].nombre %>
-                                            </h4>
-                                            <p>
-                                                <%= productos[index].descripcion %>
-                                            </p>
-                                            <div class="d-flex justify-content-around flex-wrap">
-                                                <a class="btn btn-sm btn-primary"
-                                                    href="#">Comprar</a>
-                                            </div>
-                                        </article>
-                                                                         
-                                <% } %>
-                            <% } %>
+                            <% refaccionados.forEach(product => { %>
+                                <article class="card mx-2 p-2">
+                                    <a href="/products/detail/<%= product.id %> ">
+
+                                    <img src="/images/<%=product.images[0].file%>" alt="">
+                                    <h4>
+                                        <%= product.name %>
+                                    </h4>
+                                </a>
+
+                                    <p>
+                                        <%= product.description %>
+                                    </p>
+                                    <div class="d-flex justify-content-around flex-wrap">
+                                        <a class="btn btn-sm btn-primary"
+                                            href="#">Comprar</a>
+                                    </div>
+                                </article>
+                            <% }) %>                                 
                         </div>
                       
                         <button aria-label="Previous" class="glider-prev">«</button>

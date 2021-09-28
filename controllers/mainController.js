@@ -1,32 +1,107 @@
 const fs = require('fs');
 const path = require('path');
-let productos = JSON.parse(fs.readFileSync(path.join(__dirname,'..','data','productos.json'),'utf-8'));
 let banner = require('../data/banner.json');
+
+const db = require('../database/models');
+const {Op} = require('sequelize');
+const { RSA_NO_PADDING } = require('constants');
 
 module.exports = {
     index : (req,res) => {
-        productos = JSON.parse(fs.readFileSync(path.join(__dirname,'..','data','productos.json'),'utf-8'));
-        return res.render('index',{
-            title : "Craftsy",
-            productos,
-            banner
+        let usado = db.Category.findOne({
+            where : {
+                name : 'usado'
+            },
+            include : [
+                {
+                    association : 'products',
+                    include : [
+                       {association : 'category'},
+                       {association : 'images'}
+                    ]
+                }
+            ]
         })
+        let nuevo = db.Category.findOne({
+            where : {
+                name : 'nuevo'
+            },
+            include : [
+                {
+                    association : 'products',
+                    include : [
+                        {association : 'category'},
+                        {association : 'images'}
+                    ]
+                }
+            ]
+        })
+        let refaccionado = db.Category.findOne({
+            where : {
+                name : 'refaccionado'
+            },
+            include : [
+                {
+                    association : 'products',
+                    include : [
+                        {association : 'category'},
+                        {association : 'images'}
+                    ]
+                }
+            ]
+        })
+        Promise.all([nuevo,usado,refaccionado])
+    
+            .then(([nuevo,usado,refaccionado]) => {
+                return res.render('index',{
+                    title : "Craftsy",
+                    nuevos : nuevo.products,
+                    usados : usado.products,
+                    refaccionados : refaccionado.products,
+                    banner
+                })
+            })
+            .catch(error => console.log(error)) 
     },
     search : (req,res) => {
-        if(req.query.busqueda){
-            let resultado = productos.filter(producto => producto.nombre.toLowerCase().includes(req.query.busqueda.toLowerCase()))
-            return res.render('index',{
-                title : "Resultado de la búsqueda",
-                productos : resultado,
-                busqueda : req.query.busqueda
+            db.Product.findAll({
+                include : ['category','images'],
+                where : {
+                    [Op.or] : [
+                        {
+                            name : {
+                                [Op.substring] : req.query.busqueda
+                            }
+                        },
+                        {
+                            description : {
+                                [Op.substring] : req.query.busqueda
+                            }
+                        }
+                    ]
+                }
             })
-        }
-        return res.redirect('/')
+                .then(products => {
+                    return res.render('result',{
+                        title : "Resultado de la búsqueda",
+                        products,
+                        busqueda : req.query.busqueda
+                    })
+                })
+                .catch(error => console.log(error)) 
+       
     },
     admin : (req,res) => {
-        return res.render('admin/admin',{
-            productos
+        db.Product.findAll({
+            include : ['category','images']
         })
+            .then(products => {
+                return res.render('admin/admin',{
+                    products
+                })
+            })
+            .catch(error => console.log(error))
+      
     },
     addBanner : (req,res) => {
         return res.render('admin/bannerAdd')

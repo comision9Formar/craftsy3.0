@@ -25,14 +25,14 @@
             </div>
             <div class="box-form">
                 <label for="imagen" class="btn btn-primary">Subir imagen</label>
-                <input type="file" name="imagen" id="imagen" hidden accept="image/*">
+                <input type="file" name="imagen" id="imagen" hidden accept="image/*" multiple>
             </div>
             <div class="box-form">
                 <h4>Categoría</h4>
                 <select name="categoria" id="categoria" class="form-select">
                     <option value="" selected hidden>Seleccione la categoría</option>
                     <% categorias.forEach(categoria => { %>
-                     <option value="<%= categoria %>" <%= locals.old && old.categoria === categoria ? 'selected' : null %> ><%= categoria %> </option>
+                     <option value="<%= categoria.id %>" <%= locals.old && old.categoria.name === categoria.name ? 'selected' : null %> ><%= categoria.name %> </option>
                     <% }) %>
                 </select>
                 <span class="text-danger small"><%= locals.errores && errores.categoria ? errores.categoria.msg : null %> </span>

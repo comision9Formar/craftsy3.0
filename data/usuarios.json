@@ -25,5 +25,14 @@
     "pais": "uy",
     "genero": "f",
     "rol": "user"
+  },
+  {
+    "id": 4,
+    "nombre": "Eric",
+    "email": "menaericdaniel@gmail.com",
+    "password": "$2a$10$cvs9HmV.qnxJkvv831J12OpHemg85pITJZKb19eFoweNjUO4uHMYG",
+    "pais": "ar",
+    "genero": "m",
+    "rol": "user"
   }
 ]

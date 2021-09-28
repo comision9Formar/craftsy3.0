@@ -1,31 +1,31 @@
 <!DOCTYPE html>
 <html lang="es">
-<%- include('./partials/head',{title: "Agregar producto"}) %> 
+<%- include('./partials/head',{title: "Editar producto : " + product.name }) %> 
 <body class="register">
     <%- include('./partials/header') %> 
     <main>
         <h1>EDITAR PRODUCTO</h1>
-        <form action="/products/edit/<%= producto.id %>?_method=PUT" method="POST">
+        <form action="/products/edit/<%= product.id %>?_method=PUT" method="POST">
             <div class="box-form">
                 <label for="nombre">Nombre</label>
-                <input type="text" name="nombre" id="nombre" value="<%= producto.nombre %>">
+                <input type="text" name="nombre" id="nombre" value="<%= product.name %>">
                 <span class="text-danger small"><%= locals.errores && errores.nombre ? errores.nombre.msg : null %></span>
             </div>
             <div class="box-form">
                 <label for="nombre">Descripcion</label>
-                <textarea name="descripcion" id="" cols="30" rows="3"><%= producto.descripcion %></textarea>
+                <textarea name="descripcion" id="" cols="30" rows="3"><%= product.description %></textarea>
                 <span class="text-danger small"><%= locals.errores && errores.descripcion ? errores.descripcion.msg : null %></span>
             </div>
             <div class="box-form">
                 <label for="precio">Precio</label>
-                <input type="number" name="precio" id="precio" value=<%= producto.precio %>>
+                <input type="number" name="precio" id="precio" value=<%= product.price %>>
                 <span class="text-danger small"><%= locals.errores && errores.precio ? errores.precio.msg : null %></span>
             </div>
             <div class="box-form">
                 <h4>Categoría</h4>
                 <select name="categoria" id="categoria">
-                    <% categorias.forEach(categoria => { %>
-                     <option value="<%= categoria %>" <%= producto.categoria.toLowerCase() === categoria.toLowerCase() ? 'selected' : null %> ><%= categoria %> </option>
+                    <% categories.forEach(categoria => { %>
+                     <option value="<%= categoria.id %>" <%= product.categoryId === categoria.id ? 'selected' : null %> ><%= categoria.name %> </option>
                     <% }) %>
                 </select>
                 <span class="text-danger small"><%= locals.errores && errores.categoria ? errores.categoria.msg : null %></span>

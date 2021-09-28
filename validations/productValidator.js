@@ -10,7 +10,7 @@ module.exports = [
 
     check('precio')
     .notEmpty().withMessage('Debes indicar el precio')
-    .isInt().withMessage('Debe ser un número'),
+    .isDecimal().withMessage('Debe ser un número'),
 
     check('categoria')
     .notEmpty()
