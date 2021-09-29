@@ -4,7 +4,6 @@ let banner = require('../data/banner.json');
 
 const db = require('../database/models');
 const {Op} = require('sequelize');
-const { RSA_NO_PADDING } = require('constants');
 
 module.exports = {
     index : (req,res) => {

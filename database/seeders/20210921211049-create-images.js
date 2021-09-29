@@ -18,13 +18,13 @@ for (let i = 1; i <= 10; i++) {
 module.exports = {
   up: async (queryInterface, Sequelize) => {
    
-      await queryInterface.bulkInsert('images', images, {});
+      await queryInterface.bulkInsert('Images', images, {});
     
   },
 
   down: async (queryInterface, Sequelize) => {
    
-     await queryInterface.bulkDelete('images', null, {});
+     await queryInterface.bulkDelete('Images', null, {});
      
   }
 };

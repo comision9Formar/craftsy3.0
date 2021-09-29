@@ -22,10 +22,10 @@
               <% if (locals.userLogin) { %>
                 <li class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <%= locals.userLogin.nombre %> 
+                    <%= locals.userLogin.name %> 
                   </a>
                   <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <% if (locals.userLogin.rol === "admin") { %>
+                    <% if (locals.userLogin.rolId === 1) { %>
                       <li><a class="dropdown-item" href="/admin">Administración</a></li>
                     <% } %>
                     <li><a class="dropdown-item" href="/users/profile">Mi perfil</a></li>
