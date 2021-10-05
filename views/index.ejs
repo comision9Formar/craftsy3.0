@@ -42,7 +42,7 @@
 
                     <% nuevos.forEach(producto=> { %>
                         <article>
-                            <img class="photo" src="/images/<%=producto.images[0].file%>" alt="">
+                            <img class="photo" src="/images/<%=producto.images[0] ? producto.images[0].file : 'default-image.png'%>" alt="">
                             <img class="img-discount" src="/images/img-descuento.png" alt="">
                             <h4>
                                 <%= producto.name %>
@@ -63,7 +63,7 @@
                     <h3 class="w-100">Celulares usados</h3>
                         <% usados.forEach(producto=> { %>
                             <article>
-                                <img src="/images/<%=producto.images[0].file%>" alt="">
+                                <img src="/images/<%=producto.images[0] ? producto.images[0].file : 'default-image.png'%>" alt="">
                                 <h4>
                                     <%= producto.name %>
                                 </h4>
@@ -117,7 +117,7 @@
                                 <article class="card mx-2 p-2">
                                     <a href="/products/detail/<%= product.id %> ">
 
-                                    <img src="/images/<%=product.images[0].file%>" alt="">
+                                    <img src="/images/<%=product.images[0] ? product.images[0].file : 'default-image.png'%>" alt="">
                                     <h4>
                                         <%= product.name %>
                                     </h4>

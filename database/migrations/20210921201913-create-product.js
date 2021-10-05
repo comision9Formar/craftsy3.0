@@ -9,19 +9,24 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       name: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        allowNull : false,
       },
       description: {
-        type: Sequelize.STRING(500)
+        type: Sequelize.STRING(500),
+        allowNull : false,
       },
       price: {
-        type: Sequelize.DECIMAL(8,2)
+        type: Sequelize.DECIMAL(8,2),
+        allowNull : false,
       },
       discount: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        defaultValue : 0
       },
       categoryId: {
         type: Sequelize.INTEGER,
+        allowNull : false,
         references : {
           model : {
             tableName : 'Categories',
