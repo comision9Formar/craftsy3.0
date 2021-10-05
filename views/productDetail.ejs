@@ -9,15 +9,17 @@
                   <div class="row">
                     <div class="col-4">
                       <div class="d-flex flex-column">
-                        <% product.images.forEach(image => { %>
-                          <img width="150" class="my-2" src="/images/<%= image.file %>" alt="" onclick="document.getElementById('masterImg').setAttribute('src','/images/<%=image.file%>')">
-                    <% }) %>
+                       <% if (product.images[0]) { %>
+                          <% product.images.forEach(image => { %>
+                            <img width="150" class="my-2" src="/images/<%= image.file %>" alt="" onclick="document.getElementById('masterImg').setAttribute('src','/images/<%=image.file%>')">
+                          <% }) %>
+                       <% } %>
                       </div>
                      
                     </div>
                     <div class="col-8">
                       <div class="">
-                        <img id="masterImg" src="/images/<%= product.images[0].file %>" class="card-img-top" alt="...">
+                        <img id="masterImg" src="/images/<%= product.images[0] ? product.images[0].file : 'default-image.png' %>" class="card-img-top" alt="...">
                       </div>
                       <div class="col-md-8">
                         <div class="card-body">

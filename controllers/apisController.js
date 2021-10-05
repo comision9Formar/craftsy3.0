@@ -24,10 +24,26 @@ module.exports = {
             let response = {
                 status: 200,
                 meta: {
-                    amount: categorias.length,
+                    total: categorias.length,
                     link: `${req.protocol}://${req.get('host')}${req.originalUrl}`
                 },
                 data: categorias
+            }
+            return res.status(200).json(response)
+        } catch (error) {
+            throwError(res, error)
+        }
+    },
+    getProducts: async (req, res) => {
+        try {
+            let products = await db.Product.findAll()
+            let response = {
+                status: 200,
+                meta: {
+                    total: products.length,
+                    link: `${req.protocol}://${req.get('host')}${req.originalUrl}`
+                },
+                data: products
             }
             return res.status(200).json(response)
         } catch (error) {
@@ -72,7 +88,7 @@ module.exports = {
                 status: 201,
                 meta: {
                     link: `${req.protocol}://${req.get('host')}${req.originalUrl}`,
-                    msg : 'El producto se ha guardado con éxito'
+                    msg: 'El producto se ha guardado con éxito'
                 },
                 data: product
             }
@@ -92,17 +108,37 @@ module.exports = {
             return res.status(error.status || 500).json(response)
         }
     },
-    detail: (req, res) => {
-        db.Product.findByPk(req.params.id, {
-            include: ['category', 'images']
-        })
-            .then(product => {
-                return res.render('productDetail', {
-                    product,
-                    capitalizeOneLetter
+    detailProduct: async (req, res) => {
+        try {
+            if(Number.isNaN(+req.params.id)){
+                return throwError(res, {
+                    status: 400,
+                    errors : 'ID incorrecto'
                 })
+            } 
+
+            let product = await db.Product.findByPk(req.params.id, {
+                include: ['category', 'images']
             })
-            .catch(error => console.log(error))
+            if(product){
+                let response = {
+                    status: 200,
+                    meta: {
+                        link: `${req.protocol}://${req.get('host')}${req.originalUrl}`
+                    },
+                    data: product
+                }
+                return res.status(200).json(response)
+            }else{
+                return throwError(res, {
+                    status: 400,
+                    errors : 'Producto inexistente'
+                })
+            }
+           
+        } catch (error) {
+            throwError(res, error)
+        }
     },
     edit: (req, res) => {
         let categories = db.Category.findAll({
