@@ -12,7 +12,7 @@ router.post('/add', upload.array('imagen'), productValidator ,store);
 router.get('/detail/:id',detail)
 
 router.get('/edit/:id',edit);
-router.put('/edit/:id',productValidator,update);
+router.put('/edit/:id', upload.array('imagen'), productValidator,update);
 
 router.delete('/delete/:id',destroy);
 

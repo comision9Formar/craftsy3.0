@@ -4,6 +4,8 @@ const fs = require('fs');
 const path = require('path');
 const db = require('../database/models')
 
+const queryInterface = db.sequelize.getQueryInterface();
+
 module.exports = {
     add : (req,res) => {
         db.Category.findAll({
@@ -95,12 +97,9 @@ module.exports = {
                 })
             })
             .catch(error => console.log(error))
-
-       
     },
     update : (req,res) => {
         let errors = validationResult(req);
-
         if(errors.isEmpty()){
             
             const {nombre,precio,descripcion,categoria} = req.body;
@@ -117,9 +116,38 @@ module.exports = {
                     }
                 }
             )
-                .then( response => {
-                    console.log(response)
-                    return res.redirect('/admin')
+                .then( () => {
+
+                    db.Product.findByPk(req.params.id,{
+                        include : ['images']
+                    })
+                        .then( async product => {
+                            if(req.files.length != 0){
+                                product.images.forEach(image => {
+                                    if(fs.existsSync(path.join(__dirname,'../public/images',image.file))){
+                                        fs.unlinkSync(path.join(__dirname,'../public/images',image.file))
+                                    }
+                                });
+   
+                                    await queryInterface.bulkDelete('Images', {
+                                        productId : product.id
+                                    });
+                            
+
+
+                                let images = req.files.map(image => {
+                                    let item = {
+                                        file : image.filename,
+                                        productId : product.id
+                                    }
+                                    return item
+                                }) 
+        
+                                db.Image.bulkCreate(images,{validate : true})
+                                    .then( () => console.log('imagenes guardadas satisfactoriamente'))
+                            }
+                            return res.redirect('/admin')
+                        })
                 })
                 .catch(error => console.log(error))
 

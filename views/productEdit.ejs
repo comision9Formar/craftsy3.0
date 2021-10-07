@@ -5,7 +5,7 @@
     <%- include('./partials/header') %> 
     <main>
         <h1>EDITAR PRODUCTO</h1>
-        <form action="/products/edit/<%= product.id %>?_method=PUT" method="POST">
+        <form action="/products/edit/<%= product.id %>?_method=PUT" method="POST" enctype="multipart/form-data">
             <div class="box-form">
                 <label for="nombre">Nombre</label>
                 <input type="text" name="nombre" id="nombre" value="<%= product.name %>">
@@ -20,6 +20,10 @@
                 <label for="precio">Precio</label>
                 <input type="number" name="precio" id="precio" value=<%= product.price %>>
                 <span class="text-danger small"><%= locals.errores && errores.precio ? errores.precio.msg : null %></span>
+            </div>
+            <div class="box-form">
+                <label for="imagen" class="btn btn-primary">Cambiar imágenes</label>
+                <input type="file" name="imagen" id="imagen" hidden accept="image/*" multiple>
             </div>
             <div class="box-form">
                 <h4>Categoría</h4>

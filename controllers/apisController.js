@@ -137,41 +137,41 @@ module.exports = {
             }
            
         } catch (error) {
+            console.log(error)
             throwError(res, error)
         }
     },
-    edit: (req, res) => {
-        let categories = db.Category.findAll({
-            order: [
-                ['name']
-            ]
-        })
-        let product = db.Product.findByPk(req.params.id, {
-            include: ['category', 'images']
-        })
-        Promise.all(([categories, product]))
-            .then(([categories, product]) => {
-                return res.render('productEdit', {
-                    categories,
-                    product,
+    updateProduct: async (req, res) => {
+
+        try {
+            let errors = [];
+            if (typeof req.body.name == "undefined") {
+                let item = {
+                    field: 'name',
+                    msg: "El campo 'name' no pude ser nulo"
+                }
+                errors.push(item)
+            }
+            if (typeof req.body.description == "undefined") {
+                let item = {
+                    field: 'description',
+                    msg: "El campo 'description' no pude ser nulo"
+                }
+                errors.push(item)
+            }
+            if (errors.length != 0) {
+                return throwError(res, {
+                    status: 500,
+                    errors
                 })
-            })
-            .catch(error => console.log(error))
-
-
-    },
-    update: (req, res) => {
-        let errors = validationResult(req);
-
-        if (errors.isEmpty()) {
-
-            const { nombre, precio, descripcion, categoria } = req.body;
-            db.Product.update(
+            }
+            const { name, price, description, categoryId } = req.body;
+            let update = await db.Product.update(
                 {
-                    name: nombre.trim(),
-                    description: descripcion.trim(),
-                    price: precio,
-                    categoryId: categoria
+                    name: name.trim(),
+                    description: description.trim(),
+                    price: price,
+                    categoryId: categoryId
                 },
                 {
                     where: {
@@ -179,54 +179,63 @@ module.exports = {
                     }
                 }
             )
-                .then(response => {
-                    console.log(response)
-                    return res.redirect('/admin')
-                })
-                .catch(error => console.log(error))
-
-
-        } else {
-            let categories = db.Category.findAll({
-                order: [
-                    ['name']
-                ]
-            })
-            let product = db.Product.findByPk(req.params.id, {
-                include: ['category', 'images']
-            })
-            Promise.all(([categories, product]))
-                .then(([categories, product]) => {
-                    return res.render('productEdit', {
-                        categories,
-                        product,
-                        errores: errors.mapped()
-                    })
-                })
-                .catch(error => console.log(error))
+            if(update[0] === 1 ){
+                let response = {
+                    status: 200,
+                    meta: {
+                        link: `${req.protocol}://${req.get('host')}${req.originalUrl}`
+                    },
+                    msg: 'Producto actualizado!' 
+                }
+                return res.status(200).json(response)
+            }else{
+                throw new Error
+            }
+            
+        } catch (error) {
+            console.log(error)
+            throwError(res, error)
         }
-
     },
-    destroy: (req, res) => {
-        db.Product.findByPk(req.params.id, {
-            include: ['images']
-        })
-            .then(products => {
-                products.images.forEach(image => {
+    destroyProduct: async (req, res) => {
+
+        try {
+            let product = await db.Product.findByPk(req.params.id, {
+                include: ['images']
+            })
+            if(product){
+                product.images.forEach(image => {
                     if (fs.existsSync(path.join(__dirname, '../public/images', image.file))) {
                         fs.unlinkSync(path.join(__dirname, '../public/images', image.file))
                     }
                 });
-                db.Product.destroy({
-                    where: {
-                        id: req.params.id
-                    }
-                })
-                    .then(() => {
-                        return res.redirect('/admin')
-                    })
+            }
+          
+            let remove =  await db.Product.destroy({
+                where: {
+                    id: req.params.id
+                }
             })
-            .catch(error => console.log(error))
+            return res.json(remove)
+            if(remove[0] === 1 ){
+                let response = {
+                    status: 200,
+                    meta: {
+                        link: `${req.protocol}://${req.get('host')}${req.originalUrl}`
+                    },
+                    msg: 'Producto actualizado!' 
+                }
+                return res.status(200).json(response)
+            }else{
+                throw new Error
+            }
 
+        } catch (error) {
+            console.log(error)
+        }
+
+        db.Product.findByPk(req.params.id, {
+            include: ['images']
+        })
     }
 }
