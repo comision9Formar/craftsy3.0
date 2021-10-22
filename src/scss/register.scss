@@ -1,0 +1,73 @@
+.register main, .login main{
+    width: 350px;
+    margin: 0 auto;
+}
+
+.register h1, .login h1{
+    text-align: center;
+}
+
+.register .box-form, .login .box-form{
+    display: flex;
+    flex-direction: column;
+    margin: 20px 0;
+}
+
+.register h4{
+    margin: 20px 0;
+}
+
+
+.register .box-form small, .login small{
+    color: red;
+    margin: 10px 0;
+    display: inline-block;
+}
+
+.register .options {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.register .options label{
+    font-size: 14px;
+}
+
+.register .box-form textarea{
+    resize: none;
+}
+
+.register .box-button {
+    display: flex;
+    justify-content: space-around;
+    margin: 30px 0; 
+}
+.register .box-button button, .login .box-button button {
+    padding: 8px 0;
+    color: whitesmoke;
+    background-color: cadetblue;
+    border: none;
+    border-radius: 5px;
+    width: 120px;
+}
+
+.register .box-button button:hover{
+    background-color: slategray;
+}
+
+/* login!!! */
+
+.login .box-remember{
+    display: flex;
+    justify-content: flex-end;
+}
+
+.login .box-remember input{
+    margin-right: 5px;
+}
+
+.login .box-button-login{
+    display: flex;
+
+}

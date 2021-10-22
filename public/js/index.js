@@ -1,3 +1,11 @@
+const $ = id => document.getElementById(id);
+
+$('switch').addEventListener('click', () => {
+  $('switch').classList.toggle('active');
+  document.body.classList.toggle('dark');
+})
+
+
 new Glider(document.querySelector('.glider'), {
     // Mobile-first defaults
     slidesToShow: 1,

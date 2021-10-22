@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('./partials/head') %>
+    <body class="register">
+        <%- include('./partials/header') %>
+            <main class="container">
+                <div class="row">
+                    <div class="col-12 col-md-8 col-lg-6 mx-auto ">
+                        <div class="card shadow mt-3">
+                            <div class="card-header">
+                                <h3>REGISTRATE</h3>
+
+                            </div>
+                            <div class="card-body">
+                                <form action="" method="POST" >
+                                    <div class="mb-3">
+                                        <label for="nombre">Nombre</label>
+                                            <input class="form-control <%= locals.errores && errores.name ? 'is-invalid' : null %> " type="text" name="name" id="name" placeholder="Ingresá tu nombre">
+                                        <p id="name-error" class="p-1 mt-2 small"><%= locals.errores && errores.name ? errores.name.msg : null %> </p>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="email">Email</label>
+                                        <input class="form-control <%= locals.errores && errores.email ? 'is-invalid' : null %> " type="email" name="email" id="email" placeholder="Ingresá tu email">
+                                        <small class="text-danger small"><%= locals.errores && errores.email ? errores.email.msg : null %> </small>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="password">Contraseña</label>
+                                        <input class="form-control <%= locals.errores && errores.password ? 'is-invalid' : null %> " type="password" name="password" id="password" placeholder="contraseña">
+                                        <small class="text-danger small"><%= locals.errores && errores.password ? errores.password.msg : null %> </small>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="password2">Confirmar contraseña</label>
+                                        <input class="form-control <%= locals.errores && errores.password2 ? 'is-invalid' : null %> " type="password" name="password2" id="password2" placeholder="contraseña">
+                                        <small class="text-danger small"><%= locals.errores && errores.password2 ? errores.password2.msg : null %> </small>
+                                    </div>
+                                    <div class="mb-3">
+                                        <input type="checkbox" name="terminos" id="terminos">
+                                        <label for="terminos">Acepto los términos y condiciones</label>
+                                        <div>
+                                            <small class="text-danger small"><%= locals.errores && errores.terminos ? errores.terminos.msg : null %> </small>
+                
+                                        </div>
+                                    </div>
+                                      
+                                   
+                
+                                    <div class="mb-3 text-end">
+                                        <button class="btn btn-primary" type="reset">Cancelar</button>
+                                        <button class="btn btn-secondary" type="submit">Registrarme</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                       
+                    </div>
+                </div>
+              
+            </main>
+            <%- include('./partials/footer') %> 
+            <%- include('./partials/scripts') %>
+            <script src="/js/register.js"></script>
+
+    </body>
+
+</html>
