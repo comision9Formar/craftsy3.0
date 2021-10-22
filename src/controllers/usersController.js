@@ -37,7 +37,8 @@ module.exports = {
         }else{
             return res.render('register',{
                 title : 'Registro',
-                errores : errors.mapped()
+                errores : errors.mapped(),
+                old : req.body
             })
         }
     },

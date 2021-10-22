@@ -11,6 +11,8 @@ const throwError = (res, error) => {
     })
 }
 
+const getUrl = req => `${req.protocol}://${req.get('host')}${req.originalUrl}`
+
 
 module.exports = {
     getCategories: async (req, res) => {
@@ -237,5 +239,24 @@ module.exports = {
         db.Product.findByPk(req.params.id, {
             include: ['images']
         })
+    },
+    getMails : async (req,res) => {
+        try {
+            let result = await db.User.findAll({
+                attributes: ['email']
+            })
+            let emails = result.map(user => user.email)
+            return res.status(200).json({
+                meta : {
+                    link : getUrl(req),
+                    total : emails.length
+                },
+                data : emails
+            })
+        } catch (error) {
+            console.log(error)
+            throwError(res, error)
+
+        }
     }
 }
