@@ -6,49 +6,75 @@
 
     <main>
         <div class="card ">
-            <div class="table-responsive">
+            <div class="card-header">
+                    <div class="row">
+                        <div class="col-12 col-md-6"></div>
+                        <div class="col-12 col-md-6 my-2 d-flex justify-content-end">
+                            <ul class="pagination pagination-sm" id="box-paginator">
 
-        <table class="table table-hover  ">
-            <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">Imagen</th>
-                <th scope="col">Producto</th>
-                <th scope="col">Precio</th>
-                <th scope="col">Categoría</th>
-                <th scope="col">Acciones</th>
-              </tr>
-            </thead>
-            <tbody>
-                <% products.forEach((product,index) => { %>
-                    <tr>
-                        <th scope="row"><%= index + 1 %> </th>
-                        <td><img width="100" src="/images/<%= product.images[0] ? product.images[0].file : 'default-image.png' %>" alt=""></td>
-                        <td><%= product.name %> </td>
-                        <td><%= product.price %> </td>
-                        <td><%= product.category.name %> </td>
-                        <td class="d-flex justify-content-around">
-                            <a class="btn btn-sm btn-success"
-                            href="/products/edit/<%= product.id %>"><i class="fas fa-edit"></i></a>
-                        <div>
-                            <form
-                                action="/products/delete/<%= product.id %>?_method=DELETE"
-                                method="POST">
-                                <button class="btn btn-sm btn-danger"
-                                    type='submit'><i class="fas fa-trash-alt"></i></button>
-                            </form>
+                            </ul>
                         </div>
-                        </td>
-                      </tr>
-                <% }) %>
-             
-            </tbody>
-          </table>
-        </div>
+                    </div>
+                    <div class="row g-2">
+                        <div class="col-12 col-md-2">
+                                <select class="form-select" id="select-filter">
+                                    <option value="" selected hidden>Filtrar</option>
+                                    <% categories.forEach(category => { %>
+                                        <option value="<%= category.id %>"><%= category.name %> </option>
+
+                                    <% }) %>
+                                </select>
+                        </div>
+                        <div class="col-12 col-md-2">
+                                <select class="form-select" name="" id="select-order">
+                                    <option value="" selected hidden>Ordenar</option>
+                                    <option value="name">Producto</option>
+                                    <option value="price">Precio</option>
+                                    <option value="categoryId">Categoría</option>
+                                    <option value="id">Default</option>
+                                </select>
+                        </div>
+                        <div class="col-12 col-md-2">
+                                <select class="form-select" name="" id="select-limit">
+                                    <option value="10">10</option>
+                                    <option value="25">25</option>
+                                    <option value="50">50</option>
+                                    <option value="100">100</option>
+                                </select>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <input id="input-search" class="form-control me-2" type="search" placeholder="Search"
+                                    aria-label="Search" name="search">
+                        </div>
+                    </div> 
+
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+
+                    <table class="table table-hover  ">
+                        <thead>
+                          <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Imagen</th>
+                            <th scope="col">Producto</th>
+                            <th scope="col">Precio</th>
+                            <th scope="col">Categoría</th>
+                            <th scope="col">Acciones</th>
+                          </tr>
+                        </thead>
+                        <tbody id="table">
+                          
+                         
+                        </tbody>
+                      </table>
+                    </div>
+            </div>
+         
     </div>
 
     </main>
     <%- include('../partials/scripts') %> 
-    <script src="'/js/admin.js"></script>
+    <script src="/js/admin.js"></script>
 </body>
 </html>

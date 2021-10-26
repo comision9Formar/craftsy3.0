@@ -6,7 +6,7 @@ let regExPass2 = /^(?=.*\d)(?=.*[\u0021-\u002b\u003c-\u0040])(?=.*[A-Z])(?=.*[a-
 
 const emailVerify = async (email) => {
     try {
-        let response = await fetch('http://localhost:3000/api/emails');
+        let response = await fetch(window.origin + '/api/emails');
         let result = await response.json()
 
         return result.data.includes(email)

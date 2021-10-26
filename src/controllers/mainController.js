@@ -91,12 +91,10 @@ module.exports = {
        
     },
     admin : (req,res) => {
-        db.Product.findAll({
-            include : ['category','images']
-        })
-            .then(products => {
+        db.Category.findAll()
+            .then(categories => {
                 return res.render('admin/admin',{
-                    products
+                    categories
                 })
             })
             .catch(error => console.log(error))
