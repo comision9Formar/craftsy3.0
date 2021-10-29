@@ -12,7 +12,14 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       User.belongsTo(models.Rol,{
-        as : 'rol'
+        as : 'rol',
+        foreignKey : 'rolId'
+      })
+      User.belongsToMany(models.Product,{
+        as : 'products',
+        through : 'Carts',
+        foreignKey : 'userId',
+        otherKey : 'productId'
       })
     }
   };

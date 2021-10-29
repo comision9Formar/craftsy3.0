@@ -26,6 +26,18 @@ module.exports = {
           key : 'id'
         }
       },
+      orderId: {
+        type: Sequelize.INTEGER,
+        references : {
+          model : {
+            tableName : 'Orders'
+          },
+          key : 'id'
+        }
+      },
+      quantity: {
+        type: Sequelize.INTEGER,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

@@ -20,6 +20,13 @@ module.exports = (sequelize, DataTypes) => {
         as : 'images',
         onDelete : 'cascade'
       })
+
+      Product.belongsToMany(models.User,{
+        as : 'users',
+        through : 'Carts',
+        foreignKey : 'productId',
+        otherKey : 'userId'
+      })
     }
   };
   Product.init({
@@ -48,7 +55,7 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     price: {
-      type : DataTypes.INTEGER,
+      type : DataTypes.DECIMAL(10,2),
       allowNull : false,
       validate : {
         notNull : {

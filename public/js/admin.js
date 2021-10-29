@@ -11,6 +11,7 @@ window.addEventListener('load', () => {
     let order = $('select-order');
     let limit = $('select-limit');
     let search = $('input-search');
+    let total =  $('total-products')
 
     const getAllProducts = async () => {
         let response = await fetch(window.origin + `/api/products-all`);
@@ -20,10 +21,12 @@ window.addEventListener('load', () => {
     getAllProducts()
 
 
-    const getProducts = async (filter,limit,order='id') => {
-        let response = await fetch(window.origin + `/api/products?filter=${filter}&limit=${limit}&order=${order}`);
+    const getProducts = async (filter,limit,search,order='id') => {
+        let response = await fetch(window.origin + `/api/products?search=${search}&filter=${filter}&limit=${limit}&order=${order}`);
         let products = await response.json()
-        table.innerHTML = null
+        table.innerHTML = null;
+        total.innerHTML = null
+        total.innerHTML = products.meta.total + ' mostrados'
 
         products.data.forEach( product => {
             addItem(product)
@@ -60,18 +63,18 @@ window.addEventListener('load', () => {
     }
 
     filter.addEventListener('change', e => {
-        getProducts(e.target.value,limit.value,order.value)
+        getProducts(e.target.value,limit.value,search.value,order.value)
     })
     
     order.addEventListener('change', e => {
-        getProducts(filter.value,limit.value,e.target.value)
+        getProducts(filter.value,limit.value,search.value,e.target.value)
     })
 
     limit.addEventListener('change', e => {
-        getProducts(filter.value,e.target.value,order.value)
+        getProducts(filter.value,e.target.value,search.value,order.value)
     })
 
-    search.addEventListener('keyup',  e => {
+   /*  search.addEventListener('keyup',  e => {
         const products = JSON.parse(localStorage.getItem('products'));
         if(e.target.value.length >= 3){
             let result = products.filter(product => product.name.toLowerCase().includes(e.target.value))
@@ -83,7 +86,21 @@ window.addEventListener('load', () => {
                 addItem(product)
             })
         }
-       
+    }) */
+
+    search.addEventListener('keyup', async  e => {
+        if(e.target.value.length >= 3){
+            
+            let response = await fetch(window.origin + `/api/search?search=${e.target.value}&filter=${filter.value}&limit=${limit.value}&order=${order.value}`);
+            let products = await response.json()
+            table.innerHTML = null
+            total.innerHTML = null
+            total.innerHTML = products.meta.total + ' mostrados'
+            
+            products.data.forEach( product => {
+                addItem(product)
+            })
+        }
     })
 
 })

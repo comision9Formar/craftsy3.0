@@ -1,4 +1,3 @@
-const $ = id => document.getElementById(id);
 
 $('switch').addEventListener('click', () => {
   $('switch').classList.toggle('active');

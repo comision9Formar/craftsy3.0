@@ -1,51 +1,109 @@
 <!DOCTYPE html>
 <html lang="es">
-<%- include('./partials/head',{title: "Agregar producto"}) %> 
-<body class="register">
-    <%- include('./partials/header') %> 
-    <main>
-        <h1>CARGA DE PRODUCTO</h1>
-        <form action="" method="POST" enctype="multipart/form-data">
-            <div class="box-form">
-                <label for="nombre">Nombre</label>
-                <input type="text" name="nombre" id="nombre" class="form-control" value="<%= locals.old && old.nombre ? old.nombre : null %>">
-                <span class="text-danger small"><%= locals.errores && errores.nombre ? errores.nombre.msg : null %> </span>
-            </div>
-            <div class="box-form">
-                <label for="nombre">Descripcion</label>
-                <textarea name="descripcion" id="" cols="30" rows="3" class="form-control"><%= locals.old && old.descripcion ? old.descripcion : null %></textarea>
-                <span class="text-danger small"><%= locals.errores && errores.descripcion ? errores.descripcion.msg : null %> </span>
+<%- include('./partials/head',{title: "Agregar producto" }) %>
 
-            </div>
-            <div class="box-form">
-                <label for="precio">Precio</label>
-                <input type="number" name="precio" id="precio" class="form-control" value=<%= locals.old && old.precio ? old.precio : null %> >
-                <span class="text-danger small"><%= locals.errores && errores.precio ? errores.precio.msg : null %> </span>
+    <body class="register">
+        <%- include('./admin/partials/header') %>
+            <main>
+                <div class="row">
+                    <div class="col-12 col-md-8 mx-auto mt-3">
+                        <div class="card shadow">
+                            <div class="card-header">
+                                <h4>CARGA DE PRODUCTO</h4>
 
-            </div>
-            <div class="box-form">
-                <label for="imagen" class="btn btn-primary">Subir imagen</label>
-                <input type="file" name="imagen" id="imagen" hidden accept="image/*" multiple>
-            </div>
-            <div class="box-form">
-                <h4>Categoría</h4>
-                <select name="categoria" id="categoria" class="form-select">
-                    <option value="" selected hidden>Seleccione la categoría</option>
-                    <% categorias.forEach(categoria => { %>
-                     <option value="<%= categoria.id %>" <%= locals.old && old.categoria.name === categoria.name ? 'selected' : null %> ><%= categoria.name %> </option>
-                    <% }) %>
-                </select>
-                <span class="text-danger small"><%= locals.errores && errores.categoria ? errores.categoria.msg : null %> </span>
+                            </div>
+                            <div class="card-body">
 
-            </div>
-            <div class="box-button">
-                <button type="submit">Agregar</button>
-            </div>
-        </form>
-    </main>
-    <%- include('./partials/footer') %> 
-    <%- include('./partials/scripts') %>
+                                <form class="row needs-validation" action="" method="POST" enctype="multipart/form-data"
+                                    novalidate>
+                                    <div class="col-12  mb-3 ">
+                                        <div class="input-group has-validation">
+                                            <input placeholder="Nombre" type="text" name="nombre" id="nombre" class="form-control"
+                                                value="<%= locals.old && old.nombre ? old.nombre : null %>" required>
+                                         
+                                            <div class="invalid-feedback">
+                                                El nombre del producto es requerido
+                                            </div>
+                                        </div>
+                                        <span class="text-danger small ms-2">
+                                            <%= locals.errores && errores.nombre ? errores.nombre.msg : null %>
+                                        </span>
+                                    </div>
+                                    <div class="col-12 mb-3">
+                                        <div class="input-group has-validation">
 
-</body>
+                                        <textarea placeholder="Descripcion" name="descripcion" id="descripcion" cols="30" rows="3" class="form-control"
+                                            required style="resize: none;"><%= locals.old && old.descripcion ? old.descripcion : null %></textarea>
+                                        
+                                        <div class="invalid-feedback" id="error-description">
+                                            La descripcion es obligatoria
+                                        </div>
+                                       
+                                    </div>
+                                    <span class="text-danger small sm-2" >
+                                        <%= locals.errores && errores.descripcion ? errores.descripcion.msg : null
+                                            %>
+                                    </span>
+                                    </div>
+                                    <div class="col-12 col-md-6 mb-3">
+                                        <div class="input-group has-validation">
+                                        <input placeholder="Precio" type="number" name="precio" id="precio" class="form-control"
+                                            value="<%=locals.old && old.precio ? old.precio : null %>" required>
+                                      
+                                        <div class="invalid-feedback">
+                                            Debes indicar el precio
+                                        </div>
+                                    </div>
+                                    <span class="text-danger small ms-2">
+                                        <%= locals.errores && errores.precio ? errores.precio.msg : null %>
+                                    </span>
+                                    </div>
+                                    <div class="col-12 col-md-6 mb-3">
+                                        <div class="input-group has-validation">
+                                        <select name="categoria" id="categoria" class="form-select" required>
+                                            <option value="" selected hidden>Seleccione la categoría</option>
+                                            <% categorias.forEach(categoria=> { %>
+                                                <option value="<%= categoria.id %>" <%=locals.old &&
+                                                    old.categoria.name===categoria.name ? 'selected' : null %> ><%=
+                                                        categoria.name %>
+                                                </option>
+                                                <% }) %>
+                                        </select>
+                                      
+                                        <div class="invalid-feedback">
+                                            La categoria es obligatoria
+                                        </div>
+                                    </div>
+                                    <span class="text-danger small ms-2">
+                                        <%= locals.errores && errores.categoria ? errores.categoria.msg : null %>
+                                    </span>
+                                    </div>
+                                    <div class="col-12 col-md-6 mb-3 mt-2 text-center">
+                                        <label for="imagen" class="btn btn-secondary">Subir imagen</label>
+                                        <input type="file" name="imagen" id="imagen" hidden accept="image/*" multiple>
+                                        <div>
+                                            <span class="text-danger small">
+                                                <%= locals.errores && errores.imagen ? errores.imagen.msg : null %>
+                                            </span>
+                                        </div>
+                                     
+
+                                    </div>
+
+                                    <div class="col-12 col-md-6 mb-3 mt-2 text-center">
+                                        <button class="btn btn-primary" type="submit">Agregar</button>
+                                    </div>
+                                </form>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </main>
+            <%- include('./partials/footer') %>
+                <%- include('./partials/scripts') %>
+                <script src="/js/productValidator.js"></script>
+    </body>
 
 </html>

@@ -66,6 +66,11 @@ module.exports = {
                     if (recordar) {
                         res.cookie('craftsyForEver', req.session.userLogin, { maxAge: 1000 * 60 })
                     }
+
+                    /* carrito */
+
+                    req.session.cart = []
+
                     return res.redirect('/')
                 })
                 .catch(error => console.log(error))

@@ -3,9 +3,10 @@ const capitalizeOneLetter = require('../utils/capitalizeOneLetter');
 const fs = require('fs');
 const path = require('path');
 const db = require('../database/models');
-const {Op} = require('sequelize');
+const { Op } = require('sequelize');
 
 const bcryptjs = require('bcryptjs');
+const { AsyncResource } = require('async_hooks');
 
 const throwError = (res, error) => {
     return res.status(error.status || 500).json({
@@ -43,10 +44,25 @@ module.exports = {
         console.log(req.query)
         let products;
         try {
-            if (+req.query.filter !== 0) {
+            if (+req.query.filter !== 0 && req.query.search) {
                 products = await db.Product.findAll({
                     where: {
-                        categoryId: req.query.filter
+                        categoryId: req.query.filter,
+                        name: {
+                            [Op.substring]: req.query.search
+                        }
+                    },
+                    order: [
+                        [req.query.order || 'id']
+                    ],
+                    limit: +req.query.limit,
+                    include: ['images', 'category'],
+
+                })
+            } else if (+req.query.filter !== 0) {
+                products = await db.Product.findAll({
+                    where: {
+                        categoryId: req.query.filter,
                     },
                     order: [
                         [req.query.order || 'id']
@@ -79,10 +95,10 @@ module.exports = {
             throwError(res, error)
         }
     },
-    getAllProduct : async (req,res) => {
+    getAllProduct: async (req, res) => {
         try {
             let products = await db.Product.findAll({
-                include : ['images','category'],
+                include: ['images', 'category'],
             })
 
             let response = {
@@ -306,22 +322,83 @@ module.exports = {
 
         }
     },
-    verifyPassword : async (req,res) => {
+    verifyPassword: async (req, res) => {
         console.log(req.body)
         try {
             let user = await db.User.findOne({
-                where : { email: req.body.email}
+                where: { email: req.body.email }
             })
-            if(bcryptjs.compareSync(req.body.password, user.password)){
-                return res.status(200).json({response:true})
-            }else{
-                return res.status(200).json({response:false})
+            if (bcryptjs.compareSync(req.body.password, user.password)) {
+                return res.status(200).json({ response: true })
+            } else {
+                return res.status(200).json({ response: false })
             }
         } catch (error) {
             console.log()
-            return res.status(500).json({response:error})
+            return res.status(500).json({ response: error })
 
         }
-       
-    }
+
+    },
+    search: async (req, res) => {
+        console.log(req.query)
+        let products;
+
+        try {
+            if (+req.query.filter !== 0) {
+                products = await db.Product.findAll({
+                    where: {
+                        categoryId: req.query.filter,
+                        name: {
+                            [Op.substring]: req.query.search
+                        }
+                    },
+                    order: [
+                        [req.query.order || 'id']
+                    ],
+                    limit: +req.query.limit,
+                    include: ['images', 'category'],
+    
+                })
+            } else {
+                products = await db.Product.findAll({
+                    include: ['category', 'images'],
+                    where: {
+                        [Op.or]: [
+                            {
+                                name: {
+                                    [Op.substring]: req.query.search
+                                }
+                            },
+                            {
+                                description: {
+                                    [Op.substring]: req.query.search
+                                }
+                            }
+                        ]
+                    },
+                    limit: req.query.limit,
+                    order: [
+                        [req.query.order || 'id']
+                    ],
+                })
+            }
+    
+            let response = {
+                status: 200,
+                meta: {
+                    total: products.length,
+                    link: `${req.protocol}://${req.get('host')}${req.originalUrl}`
+                },
+                data: products
+            }
+            return res.status(200).json(response)
+        } catch (error) {
+            console.log()
+            return res.status(500).json({ response: error })
+        }
+
+        
+
+    },
 }

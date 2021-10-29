@@ -48,6 +48,22 @@ header{
             }
         }
     }
+    .btn-cart{
+        border: 0;
+        background: none;
+        margin-right: 15px;
+        position: relative;
+        i {
+          font-size:40px
+        }
+        span {
+          font-size: 16px;
+          position: absolute;
+          top: 2px;
+          right: -4px;
+        }
+      }
+
 }
 
 @media (min-width:768px) {

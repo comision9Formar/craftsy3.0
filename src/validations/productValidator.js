@@ -1,4 +1,4 @@
-const { check } = require('express-validator');
+const { check, body } = require('express-validator');
 
 module.exports = [
 
@@ -14,5 +14,14 @@ module.exports = [
 
     check('categoria')
     .notEmpty()
-    .withMessage('Indica la categoría')
+    .withMessage('Indica la categoría'),
+
+    body('imagen')
+    .custom((value, {req}) => {
+        if(req.files[0]){
+            return true
+        }else{
+            return false
+        }
+    }).withMessage('No ha subido ninguna imagen')
 ]
