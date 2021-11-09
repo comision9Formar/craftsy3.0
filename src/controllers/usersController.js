@@ -69,9 +69,46 @@ module.exports = {
 
                     /* carrito */
 
-                    req.session.cart = []
+                    req.session.cart = [];
+                    db.Order.findOne({
+                        where :{
+                            userId : req.session.userLogin.id,
+                            status : 'pending'
+                        },
+                        include : [
+                            {
+                                association : 'carts',
+                                include :[
+                                    {
+                                        association : 'product',
+                                        include : ['category','images']
+                                    }
+                                ]
+                            }
+                        ]
+                    }).then( order => {
+                        if(order){
+                            order.carts.forEach(item => {
+                                let product = {
+                                    id : item.productId,
+                                    nombre : item.product.name,
+                                    imagen : item.product.images[0].file,
+                                    precio : item.product.price,
+                                    categoria : item.product.category.name,
+                                    cantidad : +item.quantity,
+                                    subtotal : item.product.price * item.quantity,
+                                    orderId : order.id
 
-                    return res.redirect('/')
+                                }
+                                req.session.cart.push(product)
+                            })
+                            //console.log(req.session.cart)
+                        }
+                        return res.redirect('/')
+
+                    })
+
+
                 })
                 .catch(error => console.log(error))
         } else {

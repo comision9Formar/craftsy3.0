@@ -4,6 +4,7 @@ const {add,store,detail,edit,update,destroy} = require('../controllers/productsC
 
 const upload = require('../middlewares/imageProductStorage');
 const productValidator = require('../validations/productValidator');
+const editValidator = require('../validations/productEditValidator');
 
 /* products */
 router.get('/add',add);
@@ -12,7 +13,7 @@ router.post('/add', upload.array('imagen'), productValidator ,store);
 router.get('/detail/:id',detail)
 
 router.get('/edit/:id',edit);
-router.put('/edit/:id', upload.array('imagen'), productValidator,update);
+router.put('/edit/:id', upload.array('imagen'), editValidator,update);
 
 router.delete('/delete/:id',destroy);
 

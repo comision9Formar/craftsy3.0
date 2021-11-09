@@ -1,0 +1,1 @@
+console.log('productAdd success')

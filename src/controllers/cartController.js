@@ -6,7 +6,7 @@ const productVerify = (cart,id) => {
 
     for (let i = 0; i < cart.length; i++) {
         
-        if(cart[i].id === id){
+        if(cart[i].id === +id){
             index = i
             break
         }
@@ -30,6 +30,8 @@ module.exports = {
             let product = await db.Product.findByPk(req.params.id,{
                 include : ['category','images']
             })
+
+            console.log(product.images)
     
             let item = {
                 id : +product.id,
@@ -62,8 +64,19 @@ module.exports = {
                 }
 
                 req.session.cart.push(item)
+
+                /* base de datos */
+
+                await db.Cart.create({
+                    userId: req.session.userLogin.id,
+                    productId: item.id,
+                    orderId : item.orderId,
+                    quantity : 1,
+                })
+
             }else{
                 let index = productVerify(req.session.cart,req.params.id)
+
                 let order = await db.Order.findOne({
                     where : {
                         userId : req.session.userLogin.id,
@@ -78,13 +91,35 @@ module.exports = {
                     }
                     req.session.cart.push(item)
 
+                    /* base de datos */
+
+                    await db.Cart.create({
+                        userId: req.session.userLogin.id,
+                        productId: item.id,
+                        orderId : item.orderId,
+                        quantity : 1,
+                    })
+
                 }else{
                     let product = req.session.cart[index]
-
                     product.cantidad++
                     product.subtotal = product.cantidad * product.precio
 
                     req.session.cart[index] = product
+
+                    /* base de datos */
+
+                    await db.Cart.update(
+                        {
+                            quantity : product.cantidad
+                        },
+                        {
+                          where : {
+                              orderId : product.orderId,
+                              productId : product.id
+                          }  
+                        }
+                    )
                 }
             }
 
@@ -100,5 +135,76 @@ module.exports = {
             console.log(error)
         }
        
+    },
+    remove : async (req,res) => {
+        try {
+            let index = productVerify(req.session.cart,req.params.id);
+            let product = req.session.cart[index];
+
+            if(product.cantidad > 1){
+                product.cantidad--
+                product.subtotal = product.cantidad * product.precio
+
+                req.session.cart[index] = product;
+
+                  /* base de datos */
+
+                  await db.Cart.update(
+                    {
+                        quantity : product.cantidad
+                    },
+                    {
+                      where : {
+                          orderId : product.orderId,
+                          productId : product.id
+                      }  
+                    }
+                )
+                
+
+            }else{
+                req.session.cart.splice(index,1);
+
+                await db.Cart.destroy({
+                    where : {
+                        orderId : product.orderId,
+                        productId : product.id
+                    }  
+                })
+            }
+
+            let response = {
+                meta : {
+                    link : getURL(req)
+                },
+                data : req.session.cart
+            }
+            return res.status(200).json(response)
+
+        } catch (error) {
+            console.log(error)
+            return res.status(500).json(error)
+        }
+    },
+    empty : async (req,res) => {
+        try {
+            await db.Order.destroy({
+                where : {
+                    userId : req.session.userLogin.id,
+                    status : 'pending'
+                },
+            })
+            req.session.cart = [];
+            let response = {
+                meta : {
+                    link : getURL(req)
+                },
+                data : req.session.cart
+            }
+            return res.status(200).json(response)
+        } catch (error) {
+            console.log(error)
+            return res.status(500).json(error)
+        }
     }
 }

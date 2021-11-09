@@ -33,7 +33,8 @@ module.exports = {
             tableName : 'Orders'
           },
           key : 'id'
-        }
+        },
+        onDelete : 'cascade'
       },
       quantity: {
         type: Sequelize.INTEGER,
