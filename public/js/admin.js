@@ -74,20 +74,6 @@ window.addEventListener('load', () => {
         getProducts(filter.value,e.target.value,search.value,order.value)
     })
 
-   /*  search.addEventListener('keyup',  e => {
-        const products = JSON.parse(localStorage.getItem('products'));
-        if(e.target.value.length >= 3){
-            let result = products.filter(product => product.name.toLowerCase().includes(e.target.value))
-            console.log(result)
-            table.innerHTML = null
-    
-            
-            result.forEach( product => {
-                addItem(product)
-            })
-        }
-    }) */
-
     search.addEventListener('keyup', async  e => {
         if(e.target.value.length >= 3){
             
